@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <form (ngSubmit)="login()" #loginForm="ngForm" class="w-100 px-3">
+    <h2 class="text-center title">Log in</h2>
+    <ion-item class="custom-item">
+      <ion-input type="email" name="email" label="Email" labelPlacement="stacked" [(ngModel)]="email" required
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+      </ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="loginForm.controls['email']?.invalid && (loginForm.controls['email']?.dirty || loginForm.controls['email']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="loginForm.controls['email']?.errors?.['required']">Email is required</span>
+        <span *ngIf="loginForm.controls['email']?.errors?.['pattern']">Invalid email format</span>
+      </ion-text>
+    </ion-item>
+    <ion-item class="custom-item">
+      <ion-input type="password" name="password" label="Password" labelPlacement="stacked" [(ngModel)]="password"
+        required></ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="loginForm.controls['password']?.invalid && (loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="loginForm.controls['password']?.errors?.['required']">Password is required</span>
+      </ion-text>
+    </ion-item>
+    <ion-button expand="full" type="submit" class="my-3" [disabled]="loginForm.invalid">Login</ion-button>
+    <span class="d-block text-end w-100 ">Don't have an account?<a class="text-decoration-none" routerLink="/auth/signup"> Sign Up</a></span>
+  </form>
+</div>
+</ion-content>

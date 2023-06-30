@@ -1,0 +1,19 @@
+.wrapper {
+    height: calc(100vh ) ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ion-item {
+        --background: rgba(255, 0, 0, 0);
+
+        ion-input,
+        ion-button {
+            margin: 20px 0px 0px;
+        }
+
+        ion-text {
+            font-size: 12px !important;
+        }
+    }
+}

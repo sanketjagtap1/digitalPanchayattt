@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <h4 class="mt-2 ">Users</h4>
+    <div class="wrapper">
+      <div class="row">
+        <div class="col-12 ">
+          <input class="form-control" type="text" placeholder="Search By Mobile" [(ngModel)]="firstName" (ngModelChange)="Search()">
+        </div>
+        <div class="col-6"></div>
+      </div>
+      <table class="rwd-table">
+        <tr>
+          <th>Sr No</th>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let user of users | paginate: {itemsPerPage:5, currentPage:p};">
+          <td data-th="Id">{{user.id}}</td>
+          <td data-th="Name">{{user.FirstName}} {{user.LastName}}</td>
+          <td data-th="Mobile">{{user.Mobile}}</td>
+          <td data-th="Email">{{user.Email}}</td>
+          <td data-th="Action">
+            <button class="btn btn-danger" (click)="deleteUser(user.id)">D</button>
+          </td>
+        </tr>
+        <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
+      </table>
+    </div>
+  </div>
+</ion-content>

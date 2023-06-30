@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true">
+  <div class="wrapper">
+    <form (ngSubmit)="signUp(signupForm.value)" #signupForm="ngForm" class="w-100 px-3">
+    <h2 class="text-center title">Sign Up</h2>
+    <ion-item class="custom-item">
+      <ion-input type="text" name="FirstName" label="First Name" labelPlacement="stacked" [(ngModel)]="firstName" required pattern="^[a-zA-Z]+$">
+      </ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="signupForm.controls['firstName']?.invalid && (signupForm.controls['firstName']?.dirty || signupForm.controls['firstName']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="signupForm.controls['firstName']?.errors?.['required']">First Name is required</span>
+        <span *ngIf="signupForm.controls['firstName']?.errors?.['pattern']">Invalid First Name format</span>
+      </ion-text>
+    </ion-item>
+
+    <ion-item class="custom-item">
+      <ion-input type="text" name="LastName" label="Last Name" labelPlacement="stacked" [(ngModel)]="lastName" required pattern="^[a-zA-Z]+$">
+      </ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="signupForm.controls['lastName']?.invalid && (signupForm.controls['lastName']?.dirty || signupForm.controls['lastName']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="signupForm.controls['lastName']?.errors?.['required']">Last Name is required</span>
+        <span *ngIf="signupForm.controls['lastName']?.errors?.['pattern']">Invalid Last Name format</span>
+      </ion-text>
+    </ion-item>
+
+    <ion-item class="custom-item">
+      <ion-input type="text" name="Mobile" [maxlength]="10" label="Mobile" labelPlacement="stacked" [(ngModel)]="mobile" required pattern="^[6-9]\d{9}$">
+      </ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="signupForm.controls['mobile']?.invalid && (signupForm.controls['mobile']?.dirty || signupForm.controls['mobile']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="signupForm.controls['mobile']?.errors?.['required']">Mobile is required</span>
+        <span *ngIf="signupForm.controls['mobile']?.errors?.['pattern']">Invalid Mobile format</span>
+      </ion-text>
+    </ion-item>
+    
+    <ion-item class="custom-item">
+      <ion-input type="email" name="Email" label="Email" labelPlacement="stacked" [(ngModel)]="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+      </ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="signupForm.controls['email']?.invalid && (signupForm.controls['email']?.dirty || signupForm.controls['email']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="signupForm.controls['email']?.errors?.['required']">Email is required</span>
+        <span *ngIf="signupForm.controls['email']?.errors?.['pattern']">Invalid email format</span>
+      </ion-text>
+    </ion-item>
+    <ion-item class="custom-item">
+      <ion-input type="password" name="Password" label="Password" labelPlacement="stacked" [(ngModel)]="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"></ion-input>
+    </ion-item>
+    <ion-item
+      *ngIf="signupForm.controls['password']?.invalid && (signupForm.controls['password']?.dirty || signupForm.controls['password']?.touched)">
+      <ion-text color="danger" slot="end">
+        <ion-icon name="warning"></ion-icon>
+        <span *ngIf="signupForm.controls['password']?.errors?.['required']">Password is required</span>
+        <span *ngIf="signupForm.controls['password']?.errors?.['pattern']"> Invalid Password format (At least 8 characters long, one uppercase letter, one lowercase letter, one digit, one special characters) </span>
+      </ion-text>
+    </ion-item>
+    <ion-button expand="full" type="submit" class="my-3" [disabled]="signupForm.invalid">Login</ion-button>
+    <span class="d-block text-end w-100 ">Already have an account?<a class="text-decoration-none" routerLink=""> Sign In</a></span>
+  </form>
+</div>
+</ion-content>

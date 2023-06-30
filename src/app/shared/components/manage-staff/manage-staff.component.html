@@ -1,0 +1,123 @@
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <h4 class="mt-2 ">Staff</h4>
+    <div class="wrapper">
+      <div class="row">
+        <div class="col-12 ">
+          <input class="form-control" type="text" placeholder="Search By Mobile" [(ngModel)]="mobile" (ngModelChange)="Search()">
+        </div>
+      </div>
+      <table class="rwd-table">
+        <tr>
+          <th>Sr No</th>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let user of users | paginate: {itemsPerPage:5, currentPage:p};">
+          <td data-th="Sr No">{{user.id}}</td>
+          <td data-th="Name">{{user.FirstName}} {{user.LastName}}</td>
+          <td data-th="Mobile">{{user.Mobile}}</td>
+          <td data-th="Email">{{user.Email}}</td>
+          <td data-th="Action">
+            <button class="btn btn-success" (click)="editUser(user.id)">E</button>
+            <button class="btn btn-danger" (click)="deletUser(user.id)">D</button>
+          </td>
+        </tr>
+        <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
+      </table>
+
+
+      <ion-fab style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button size="small" (click)="setOpen(true)"  > 
+          <ion-icon id="open-modal" expand="block" name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <ion-modal trigger="open-modal" [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="text-center">Add</ion-title>
+              <ion-buttons slot="end">
+                <ion-button *ngIf="id==''" (click)="confirm(addStaffForm.value)" [strong]="true">Confirm</ion-button>
+                <ion-button *ngIf="id!==''" (click)="update(addStaffForm.value)" [strong]="true">Update</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <form #addStaffForm="ngForm" class="w-100 px-3">
+              <ion-item class="custom-item">
+                <ion-input type="text" name="FirstName" label="First Name" labelPlacement="stacked" [(ngModel)]="firstName" required pattern="^[a-zA-Z]+$">
+                </ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="addStaffForm.controls['firstName']?.invalid && (addStaffForm.controls['firstName']?.dirty || addStaffForm.controls['firstName']?.touched)">
+                <ion-text color="danger" slot="end">
+                  <ion-icon name="warning"></ion-icon>
+                  <span *ngIf="addStaffForm.controls['firstName']?.errors?.['required']">First Name is required</span>
+                  <span *ngIf="addStaffForm.controls['firstName']?.errors?.['pattern']">Invalid First Name format</span>
+                </ion-text>
+              </ion-item>
+          
+              <ion-item class="custom-item">
+                <ion-input type="text" name="LastName" label="Last Name" labelPlacement="stacked" [(ngModel)]="lastName" required pattern="^[a-zA-Z]+$">
+                </ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="addStaffForm.controls['lastName']?.invalid && (addStaffForm.controls['lastName']?.dirty || addStaffForm.controls['lastName']?.touched)">
+                <ion-text color="danger" slot="end">
+                  <ion-icon name="warning"></ion-icon>
+                  <span *ngIf="addStaffForm.controls['lastName']?.errors?.['required']">Last Name is required</span>
+                  <span *ngIf="addStaffForm.controls['lastName']?.errors?.['pattern']">Invalid Last Name format</span>
+                </ion-text>
+              </ion-item>
+          
+              <ion-item class="custom-item">
+                <ion-input type="text" name="Mobile" [maxlength]="10" label="Mobile" labelPlacement="stacked" [(ngModel)]="mobile" required pattern="^[6-9]\d{9}$">
+                </ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="addStaffForm.controls['mobile']?.invalid && (addStaffForm.controls['mobile']?.dirty || addStaffForm.controls['mobile']?.touched)">
+                <ion-text color="danger" slot="end">
+                  <ion-icon name="warning"></ion-icon>
+                  <span *ngIf="addStaffForm.controls['mobile']?.errors?.['required']">Mobile is required</span>
+                  <span *ngIf="addStaffForm.controls['mobile']?.errors?.['pattern']">Invalid Mobile format</span>
+                </ion-text>
+              </ion-item>
+              
+              <ion-item class="custom-item">
+                <ion-input type="email" name="Email" label="Email" labelPlacement="stacked" [(ngModel)]="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+                </ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="addStaffForm.controls['email']?.invalid && (addStaffForm.controls['email']?.dirty || addStaffForm.controls['email']?.touched)">
+                <ion-text color="danger" slot="end">
+                  <ion-icon name="warning"></ion-icon>
+                  <span *ngIf="addStaffForm.controls['email']?.errors?.['required']">Email is required</span>
+                  <span *ngIf="addStaffForm.controls['email']?.errors?.['pattern']">Invalid email format</span>
+                </ion-text>
+              </ion-item>
+              <ion-item class="custom-item">
+                <ion-input type="password" name="Password" label="Password" labelPlacement="stacked" [(ngModel)]="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"></ion-input>
+              </ion-item>
+              <ion-item
+                *ngIf="addStaffForm.controls['password']?.invalid && (addStaffForm.controls['password']?.dirty || addStaffForm.controls['password']?.touched)">
+                <ion-text color="danger" slot="end">
+                  <ion-icon name="warning"></ion-icon>
+                  <span *ngIf="addStaffForm.controls['password']?.errors?.['required']">Password is required</span>
+                  <span *ngIf="addStaffForm.controls['password']?.errors?.['pattern']"> Invalid Password format (At least 8 characters long, one uppercase letter, one lowercase letter, one digit, one special characters) </span>
+                </ion-text>
+              </ion-item>
+            </form>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,20 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ion-item {
+        --background: rgba(255, 0, 0, 0);
+
+        ion-input,
+        ion-button {
+            margin: 20px 0px 0px;
+        }
+
+        ion-text {
+            font-size: 12px !important;
+        }
+    }
+}
