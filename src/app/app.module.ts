@@ -13,11 +13,14 @@ import { AdminModule } from './admin/admin.module';
 import { environment } from 'src/environments/environment';
 import {provideFirebaseApp, initializeApp} from '@angular/fire/app'
 import {getFirestore, provideFirestore} from '@angular/fire/firestore'
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AuthModule, StaffModule, UserModule, AdminModule,provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
-    provideFirestore(()=>getFirestore()),],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AuthModule,HttpClientModule, StaffModule, UserModule, AdminModule,provideFirebaseApp(()=>initializeApp(environment.firebaseConfig)),
+    provideFirestore(()=>getFirestore()),provideStorage(() => getStorage()),],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

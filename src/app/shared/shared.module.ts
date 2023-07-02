@@ -8,11 +8,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ManageComplaintsComponent } from './components/manage-complaints/manage-complaints.component';
 import { ManageProfileComponent } from './components/manage-profile/manage-profile.component';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
+import { ManageSchemesComponent } from './components/manage-schemes/manage-schemes.component';
 
 
 
 @NgModule({
-  declarations: [ManageStaffComponent, ManageComplaintsComponent, ManageProfileComponent, ManageUserComponent],
+  declarations: [ManageStaffComponent, ManageComplaintsComponent, ManageProfileComponent, ManageUserComponent, ManageSchemesComponent],
   imports: [
     CommonModule,
     RouterModule,

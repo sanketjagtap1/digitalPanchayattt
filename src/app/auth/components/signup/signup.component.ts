@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -17,19 +17,28 @@ export class SignupComponent implements OnInit {
   firstName: any;
   lastName: any;
   mobile: any;
-
+  file:any;
   
   constructor(private databaseService: DatabaseService, private sharedService: SharedService, private router: Router) { }
   @ViewChild('signupForm', { static: false }) signupForm!: NgForm;
-
+  @ViewChild('upload') uploadInputRef!: ElementRef<HTMLInputElement>;
   ngOnInit() { /* TODO document why this method 'ngOnInit' is empty */ }
-
   signUp(user: any) {
+    this.file = this.uploadInputRef.nativeElement;
     // check if user is already present
+
+  this.sharedService.uploadAndDownloadImage(this.file).subscribe(res=>{
+    console.log("res", res)
     user.UserRole = "User";
     user.Approval = "Pending";
-    this.sharedService.signUp(user);
-    this.signupForm.resetForm();
+    user.profileImage = res;
+    this.sharedService.signUp(user).then(res=>{
+      this.signupForm.resetForm();
+    });
+  })
+  
+    
+    
   }
 
 }

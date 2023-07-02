@@ -25,14 +25,8 @@ export class SigninComponent implements OnInit {
   }
 
   checkLoggedInStatus(): void {
-    const encryptedUser = localStorage.getItem('user');
-    if (encryptedUser) {
-      // User is logged in
-      const decryptedBytes = CryptoJS.AES.decrypt(encryptedUser, 'encryptionKey');
-      const decryptedUser = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
-
-      // Use the decrypted user data as needed
-      console.log('Logged in user:', decryptedUser);
+    
+    let decryptedUser = this.sharedService.getUserData();
 
       if (decryptedUser && decryptedUser['UserRole']) {
         const userRole = decryptedUser['UserRole'];
@@ -47,7 +41,7 @@ export class SigninComponent implements OnInit {
             });
             break;
           case 'Staff':
-            this.router.navigate(['/Staff']).then(() => {
+            this.router.navigate(['/staff/dashboard']).then(() => {
               console.log('Redirected to staff dashboard');
             }).catch((err) => {
               console.log(err);
@@ -62,10 +56,7 @@ export class SigninComponent implements OnInit {
             break;
         }
       }
-    } else {
-      // User is not logged in
-      console.log('User not logged in');
-    }
+    
   }
 
   login() {
@@ -89,13 +80,13 @@ export class SigninComponent implements OnInit {
           localStorage.setItem('user', encryptedUser); // Store encrypted user details in localStorage
 
           if (user['UserRole'] === 'Admin') {
-            this.router.navigate(['/admin']).then(() => {
+            this.router.navigate(['/admin/dashboard']).then(() => {
               console.log(res);
             }).catch((err) => {
               console.log(err);
             });
           } else if (user['UserRole'] === 'Staff') {
-            this.router.navigate(['/Staff']).then(() => {
+            this.router.navigate(['/staff/dashboard']).then(() => {
               console.log(res);
             }).catch((err) => {
               console.log(err);

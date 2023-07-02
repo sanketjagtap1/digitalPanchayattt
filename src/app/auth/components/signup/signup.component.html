@@ -3,6 +3,10 @@
     <form (ngSubmit)="signUp(signupForm.value)" #signupForm="ngForm" class="w-100 px-3">
     <h2 class="text-center title">Sign Up</h2>
     <ion-item class="custom-item">
+      <label for="fileUpload">Choose a File</label>
+      <input id="fileUpload" type="file" #upload>
+    </ion-item>
+    <ion-item class="custom-item">
       <ion-input type="text" name="FirstName" label="First Name" labelPlacement="stacked" [(ngModel)]="firstName" required pattern="^[a-zA-Z]+$">
       </ion-input>
     </ion-item>

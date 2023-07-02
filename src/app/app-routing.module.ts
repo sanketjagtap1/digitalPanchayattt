@@ -9,6 +9,7 @@ import { ManageComplaintsComponent } from './shared/components/manage-complaints
 import { ManageProfileComponent } from './shared/components/manage-profile/manage-profile.component';
 import { ManageStaffComponent } from './shared/components/manage-staff/manage-staff.component';
 import { ManageUserComponent } from './shared/components/manage-user/manage-user.component';
+import { ManageSchemesComponent } from './shared/components/manage-schemes/manage-schemes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'manage-staff', component: ManageStaffComponent },
       { path: 'manage-users', component: ManageUserComponent },
       { path: 'manage-complaints', component: ManageComplaintsComponent },
+      { path: 'manage-schemes', component: ManageSchemesComponent },
       { path: 'manage-profile', component: ManageProfileComponent },
     ]
   },
@@ -32,6 +34,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-users', component: ManageUserComponent },
       { path: 'manage-complaints', component: ManageComplaintsComponent },
+      { path: 'manage-schemes', component: ManageSchemesComponent },
       { path: 'manage-profile', component: ManageProfileComponent },
     ]
   },
