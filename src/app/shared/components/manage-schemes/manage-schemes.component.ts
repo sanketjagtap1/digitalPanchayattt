@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class ManageSchemesComponent implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   @ViewChild('addSchemeForm', { static: false }) addSchemeForm!: NgForm;
+  @ViewChild('upload') uploadInputRef!: ElementRef<HTMLInputElement>;
 
   schemeForm: FormGroup;
   schemeName!: string;
@@ -21,9 +22,20 @@ export class ManageSchemesComponent implements OnInit {
   description!: string;
   documentsNeeded!: string;
   isModalOpen = false;
+  isModalOpen1 = false;
   users: any
   id: any = '';
   p: number = 1;
+  schemeId:any;
+  decryptedUser:any
+
+
+  
+  // apply for scheme form
+  qualification1!: string;
+  name!: string;
+  age!: number;
+  education!: string;
   constructor(private formBuilder: FormBuilder, private databaseService: DatabaseService, private sharedService: SharedService, private router: Router) {
     this.schemeForm = this.formBuilder.group({
       schemeName: ['', Validators.required],
@@ -33,28 +45,30 @@ export class ManageSchemesComponent implements OnInit {
     });
   }
 
+
+
   ngOnInit() {
     // Initialization code goes here
+    this.decryptedUser = this.sharedService.getUserData();
     this.databaseService.getData('Schemes').subscribe(res => {
       console.log(res)
       this.users = res;
     })
   }
 
+  close(){
+    this.isModalOpen1 = false;
+  }
   cancel() {
     this.modal.dismiss(null, 'cancel').then(res => {
       if (res) {
         console.log(res);
         this.isModalOpen = false;
         this.id = ''
-      this.schemeName = ''
-      this.description =''
-      this.documentsNeeded = ''
-      this.qualification = ''
-        // Reset the form after submission
-       
-
-
+        this.schemeName = ''
+        this.description = ''
+        this.documentsNeeded = ''
+        this.qualification = ''
       }
     }).catch(err => {
       console.log(err);
@@ -64,18 +78,13 @@ export class ManageSchemesComponent implements OnInit {
   confirm(data: any) {
     this.modal.dismiss('confirm').then(res => {
       console.log("res=====>", res);
-
-      // check if data is already present
-      // data.UserRole = "Staff";
-      // console.log("data======>", data)
-
       this.databaseService.addData(data, 'Schemes').then(res => {
         // Reset the form after submission
         this.id = ''
-      this.schemeName = ''
-      this.description =''
-      this.documentsNeeded = ''
-      this.qualification = ''
+        this.schemeName = ''
+        this.description = ''
+        this.documentsNeeded = ''
+        this.qualification = ''
         this.sharedService.presentToast("Scheme Created Succesfully", 'success')
       }).catch(err => {
         this.sharedService.presentToast("Scheme Creatiation failes" + err, 'danger')
@@ -116,8 +125,15 @@ export class ManageSchemesComponent implements OnInit {
   }
 
 
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
+  setOpen(isOpen: boolean, id:any) {
+    console.log(id)
+    if(id==''){
+      this.isModalOpen = isOpen;
+      
+    }else{
+      this.isModalOpen1 = isOpen;
+      this.schemeId= id
+    }
   }
 
 
@@ -128,6 +144,29 @@ export class ManageSchemesComponent implements OnInit {
     }).catch(err => {
       this.sharedService.presentToast(err, 'danger')
     })
+  }
+  apply(data:any) {
+    console.log(data)
+    
+    console.log(this.decryptedUser.id)
+    console.log(this.schemeId)
+    this.sharedService.uploadAndDownloadImage(this.uploadInputRef.nativeElement).subscribe(res=>{
+      
+      data.schemeId=this.schemeId;
+      data.userId=this.decryptedUser.id;
+      data.doc=res;
+
+      console.log(data)
+      this.databaseService.addData(data, 'schemeRegistration').then(res=>{
+        console.log(res)
+        this.sharedService.presentToast("Successfully Applied", "success")
+      }).catch(err =>{
+        console.log(err)
+        this.sharedService.presentToast("Failed To Apply", "danger")
+        
+      })
+    })
+    
   }
 
   editUser(id: any) {
@@ -142,17 +181,13 @@ export class ManageSchemesComponent implements OnInit {
     })
   }
 
-  submitForm() {
-    if (this.schemeForm.valid) {
-      const formData = this.schemeForm.value;
-      // Perform further actions with the form data, such as sending it to the server
-
-      // Reset the form after submission
-      this.schemeForm.reset();
-    }
-  }
-
   formValid(): boolean {
     return this.schemeForm.valid;
   }
+
+  view(id:any){
+
+  }
+
+
 }

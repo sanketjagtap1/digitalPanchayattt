@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="container">
-    <h4 class="mt-2 ">Staff</h4>
+    <h4 class="mt-2 ">Schemes</h4>
     <div class="wrapper">
       <div class="row">
         <div class="col-12 ">
@@ -23,8 +23,17 @@
           <td data-th="Desc">{{user.description}}</td>
           <td data-th="Documents">{{user.documentsNeeded}}</td>
           <td data-th="Action">
-            <button class="btn btn-success" (click)="editUser(user.id)"><ion-icon name="create"></ion-icon></button>
-            <button class="btn btn-danger" (click)="deletUser(user.id)"><ion-icon name="trash"></ion-icon></button>
+            <button class="btn p-2 pb-1 btn-success mx-1"
+              *ngIf="decryptedUser.UserRole=='Staff' || decryptedUser.UserRole=='Admin'"
+              (click)="editUser(user.id)"><ion-icon name="create"></ion-icon></button>
+            <button *ngIf="decryptedUser.UserRole=='User'" class="btn p-2 pb-1 btn-primary mx-1"
+              (click)="setOpen(true,user.id)"><ion-icon name="add"></ion-icon></button>
+            <button class="btn p-2 pb-1 btn-primary mx-1"
+              *ngIf="decryptedUser.UserRole=='Staff' || decryptedUser.UserRole=='Admin'"
+              (click)="view(user.id)"><ion-icon name="eye"></ion-icon></button>
+            <button class="btn p-2 pb-1 btn-danger mx-1"
+              *ngIf="decryptedUser.UserRole=='Staff' || decryptedUser.UserRole=='Admin'"
+              (click)="deletUser(user.id)"><ion-icon name="trash"></ion-icon></button>
           </td>
         </tr>
         <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
@@ -32,11 +41,12 @@
 
 
       <ion-fab style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button size="small" (click)="setOpen(true)"  > 
+        <ion-fab-button size="" (click)="setOpen(true,'')">
           <ion-icon id="open-modal" expand="block" name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
 
+      <!-- add Scheme form -->
       <ion-modal trigger="open-modal" [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
         <ng-template>
           <ion-header>
@@ -53,55 +63,76 @@
           </ion-header>
           <ion-content class="ion-padding">
             <form #addSchemeForm="ngForm" class="w-100 px-3">
-              <ion-card>
-                <ion-card-header>
-                  <ion-card-title>Create Scheme</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-list>
-                    <ion-item>
-                      <ion-label position="floating">Scheme Name</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="schemeName"
-                        name="schemeName"
-                        required
-                      ></ion-input>
-                    </ion-item>
-                    <ion-item>
-                      <ion-label position="floating">Qualification</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="qualification"
-                        name="qualification"
-                        required
-                      ></ion-input>
-                    </ion-item>
-                    <ion-item>
-                      <ion-label position="floating">Description</ion-label>
-                      <ion-textarea
-                        [(ngModel)]="description"
-                        name="description"
-                        required
-                      ></ion-textarea>
-                    </ion-item>
-                    <ion-item>
-                      <ion-label position="floating">Documents Needed</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="documentsNeeded"
-                        name="documentsNeeded"
-                        required
-                      ></ion-input>
-                    </ion-item>
-                  </ion-list>
-                </ion-card-content>
-              </ion-card>
+
+              <ion-item>
+                <ion-label position="floating">Scheme Name</ion-label>
+                <ion-input type="text" [(ngModel)]="schemeName" name="schemeName" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Qualification</ion-label>
+                <ion-input type="text" [(ngModel)]="qualification" name="qualification" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Description</ion-label>
+                <ion-textarea [(ngModel)]="description" name="description" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Documents Needed</ion-label>
+                <ion-input type="text" [(ngModel)]="documentsNeeded" name="documentsNeeded" required></ion-input>
+              </ion-item>
+
             </form>
           </ion-content>
         </ng-template>
       </ion-modal>
 
+
+      <!-- apply for sceme -->
+      <ion-modal trigger="open-modal" [isOpen]="isModalOpen1" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="close()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="text-center">Apply</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="apply(applySchemeForm.value)" [strong]="true">Confirm</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <form #applySchemeForm="ngForm" class="w-100 px-3">
+              <ion-item>
+                <ion-label position="floating">Qualification<span class="required-note">*</span></ion-label>
+                <ion-input type="text" [(ngModel)]="qualification1" name="qualification" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Name</ion-label>
+                <ion-input type="text" [(ngModel)]="name" name="name" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Age</ion-label>
+                <ion-input type="number" [(ngModel)]="age" name="age" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Education</ion-label>
+                <ion-input type="text" [(ngModel)]="education" name="education" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Document</ion-label>
+              </ion-item>
+              <ion-item>
+                <input id="fileUpload" type="file" #upload>
+              </ion-item>
+              <ion-item>
+                <ion-note class="note">Note: Please provide all documents in one pdf.</ion-note>
+              </ion-item>
+            </form>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </div>
   </div>
 </ion-content>
