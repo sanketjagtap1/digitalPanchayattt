@@ -1,0 +1,23 @@
+ion-card {
+    border: none;
+    box-shadow: 2px 2px 4px grey;
+    padding: 20px;
+  }
+  
+  ion-card-content {
+    padding: 0;
+  }
+  
+  ion-item {
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  
+  a {
+    text-decoration: none;
+    color: blue;
+  }
+  ion-item::after {
+    display: none;
+  }
+  

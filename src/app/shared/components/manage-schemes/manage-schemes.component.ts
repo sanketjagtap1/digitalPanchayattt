@@ -17,11 +17,15 @@ export class ManageSchemesComponent implements OnInit {
 
   schemeForm: FormGroup;
   schemeName!: string;
+  schemeDetails:any;
   qualification!: string;
   description!: string;
   documentsNeeded!: string;
   isModalOpen = false;
-  users: any
+  showSchemeDetails = false;
+  decryptedUser:any;
+  users: any;
+  msg:any;
   id: any = '';
   p: number = 1;
   constructor(private formBuilder: FormBuilder, private databaseService: DatabaseService, private sharedService: SharedService, private router: Router) {
@@ -35,6 +39,7 @@ export class ManageSchemesComponent implements OnInit {
 
   ngOnInit() {
     // Initialization code goes here
+    this.decryptedUser = this.sharedService.getUserData();
     this.databaseService.getData('Schemes').subscribe(res => {
       console.log(res)
       this.users = res;
@@ -155,4 +160,44 @@ export class ManageSchemesComponent implements OnInit {
   formValid(): boolean {
     return this.schemeForm.valid;
   }
+
+  openModal(name:any, id:any){
+    if(name == 'isModalOpen'){
+      this.isModalOpen=true;
+    }else if(name == 'showSchemeDetails'){
+      this.showSchemeDetails=true;
+      this.getSchemeMembers(id)
+    }
+  }
+  closeModal(name:any){
+    if(name == 'isModalOpen'){
+      this.isModalOpen=false;
+    }else if(name == 'showSchemeDetails'){
+      this.showSchemeDetails=false;
+    }
+  }
+
+  getSchemeMembers(schemeId:any){
+    this.databaseService.getDataByKey(schemeId, 'schemeId', 'schemeRegistration').subscribe(res=>{
+      console.log(res);
+      this.schemeDetails=res;
+    })
+  }
+
+  updateStatus(data:any, status:any){
+    data['status']=status;
+    console.log(data)
+    
+    if(status=='accept'){
+      this.msg = 'Case Approved Succesfully'
+    }else{
+      this.msg = 'Case Reject Succesfully'
+    }
+    this.databaseService.updateData(data, 'schemeRegistration').then(res=>{
+      this.sharedService.presentToast(this.msg, 'success')
+    }).catch(err=>{
+      this.sharedService.presentToast('Unable  to proccess request', 'danger')
+    })
+  }
+
 }

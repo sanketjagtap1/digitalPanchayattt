@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="container">
-    <h4 class="mt-2 ">Staff</h4>
+    <h4 class="mt-2 ">Schemes</h4>
     <div class="wrapper">
       <div class="row">
         <div class="col-12 ">
@@ -23,16 +23,23 @@
           <td data-th="Desc">{{user.description}}</td>
           <td data-th="Documents">{{user.documentsNeeded}}</td>
           <td data-th="Action">
-            <button class="btn btn-success" (click)="editUser(user.id)"><ion-icon name="create"></ion-icon></button>
-            <button class="btn btn-danger" (click)="deletUser(user.id)"><ion-icon name="trash"></ion-icon></button>
+            <button class="btn btn-success mx-1" *ngIf="decryptedUser.UserRole!=='User'" (click)="editUser(user.id)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+            <button class="btn btn-primary mx-1" *ngIf="decryptedUser.UserRole!=='User'" (click)="openModal('showSchemeDetails', user.id)">
+              <ion-icon name="eye"></ion-icon>
+            </button>
+            <button class="btn btn-danger mx-1" *ngIf="decryptedUser.UserRole!=='User'" (click)="deletUser(user.id)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
           </td>
         </tr>
         <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
       </table>
 
 
-      <ion-fab style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button size="small" (click)="setOpen(true)"  > 
+      <ion-fab *ngIf="decryptedUser.UserRole!=='User'" style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button  (click)="setOpen(true)">
           <ion-icon id="open-modal" expand="block" name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -61,43 +68,74 @@
                   <ion-list>
                     <ion-item>
                       <ion-label position="floating">Scheme Name</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="schemeName"
-                        name="schemeName"
-                        required
-                      ></ion-input>
+                      <ion-input type="text" [(ngModel)]="schemeName" name="schemeName" required></ion-input>
                     </ion-item>
                     <ion-item>
                       <ion-label position="floating">Qualification</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="qualification"
-                        name="qualification"
-                        required
-                      ></ion-input>
+                      <ion-input type="text" [(ngModel)]="qualification" name="qualification" required></ion-input>
                     </ion-item>
                     <ion-item>
                       <ion-label position="floating">Description</ion-label>
-                      <ion-textarea
-                        [(ngModel)]="description"
-                        name="description"
-                        required
-                      ></ion-textarea>
+                      <ion-textarea [(ngModel)]="description" name="description" required></ion-textarea>
                     </ion-item>
                     <ion-item>
                       <ion-label position="floating">Documents Needed</ion-label>
-                      <ion-input
-                        type="text"
-                        [(ngModel)]="documentsNeeded"
-                        name="documentsNeeded"
-                        required
-                      ></ion-input>
+                      <ion-input type="text" [(ngModel)]="documentsNeeded" name="documentsNeeded" required></ion-input>
                     </ion-item>
                   </ion-list>
                 </ion-card-content>
               </ion-card>
             </form>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+
+
+      <!-- show details of scheme -->
+      <ion-modal trigger="open-modal" [isOpen]="showSchemeDetails" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="closeModal('showSchemeDetails')">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="text-center">Deails</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-card *ngFor="let user of schemeDetails">
+              
+              <ion-item>
+                <ion-label>ID:</ion-label>
+                <ion-text>{{ user.id }}</ion-text>
+              </ion-item>
+
+              <ion-card-content>
+                <ion-item>
+                  <ion-label>User Name:</ion-label>
+                  <ion-text>{{ user.name }}</ion-text>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Education:</ion-label>
+                  <ion-text>{{ user.education }}</ion-text>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Status:</ion-label>
+                  <ion-text>{{ user.status }}</ion-text>
+                </ion-item>
+
+
+                <ion-item>
+                  <a href="{{ user.doc }}" target="_blank">View Document</a>
+                </ion-item>
+
+                <ion-button *ngIf="user.status=='pending' &&  decryptedUser.UserRole!=='User'" color="success" (click)="updateStatus(user, 'accepted')">Accept</ion-button>
+                <ion-button color="danger" *ngIf="user.status=='pending' &&  decryptedUser.UserRole!=='User'" (click)="updateStatus(user, 'rejected')">Reject</ion-button>
+              </ion-card-content>
+            </ion-card>
           </ion-content>
         </ng-template>
       </ion-modal>

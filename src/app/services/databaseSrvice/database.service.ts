@@ -57,6 +57,13 @@ export class DatabaseService {
     return collectionData(q, { idField: 'id' });
   }
 
+  getDataByKey(value: string, key:any, collectionName:any) {
+    console.log("Inside Search Method======>", value)
+    const usersCollection = collection(this.firestore, collectionName);
+    const q = query(usersCollection, where(key, '==', value));
+    return collectionData(q, { idField: 'id' });
+  }
+
   checkMobile(mobile: string) {
     console.log("Inside Search Method======>", mobile)
     const usersCollection = collection(this.firestore, 'Users');
