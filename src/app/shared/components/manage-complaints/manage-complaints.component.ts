@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { DatabaseService } from 'src/app/services/databaseSrvice/database.service';
+import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-manage-complaints',
@@ -11,18 +13,19 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class ManageComplaintsComponent  implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal;
-  @ViewChild('addStaffForm') addStaffForm!: NgForm;
+  @ViewChild('complaintForm') complaintForm!: NgForm;
+  @ViewChild('upload') uploadInputRef!: ElementRef<HTMLInputElement>;
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
 
-  email: any;
-  password: any;
-  firstName: any;
-  lastName: any;
-  mobile: any;
-  UserRole = 'Staff';
-  users: any
+  title!: string;
+  description!: string;
+  address!: string;
+  selectedImage!: File;
+  users: any;
+  firstName:any;
+  isModalOpen=false;
   p:number=1;
-  constructor() {
+  constructor(private sharedService: SharedService, private databaseService: DatabaseService) {
 
   }
 
@@ -94,7 +97,21 @@ export class ManageComplaintsComponent  implements OnInit {
   confirm(data: any) {
     this.modal.dismiss('confirm');
     console.log(data)
+    let file = this.uploadInputRef.nativeElement;
+    this.sharedService.uploadAndDownloadImage(file).subscribe(res=>{
+      console.log("res", res)
+
+      data['status'] = "Pending";
+      data['image'] = res;
+      this.databaseService.addData(data, 'complaints').then(res=>{
+        console.log(res);
+        
+      })
+      
+    })
   }
+
+  
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -103,14 +120,18 @@ export class ManageComplaintsComponent  implements OnInit {
     }
   }
 
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
 
   Search() {
-    if (this.firstName == '') {
-      this.ngOnInit();
-    } else {
-      this.users = this.users.filter((res: { mobile: string; }) => {
-        return RegExp(this.firstName.toLocaleLowerCase()).exec(res.mobile.toLocaleLowerCase())
-      })
-    }
+    // if (this.firstName == '') {
+    //   this.ngOnInit();
+    // } else {
+    //   this.users = this.users.filter((res: { mobile: string; }) => {
+    //     return RegExp(this.firstName.toLocaleLowerCase()).exec(res.mobile.toLocaleLowerCase())
+    //   })
+    // }
   }
 }

@@ -23,6 +23,7 @@ export class ManageStaffComponent implements OnInit {
   firstName: any;
   lastName: any;
   mobile: any;
+  search: any;
   users: any
   p: number = 1;
   isModalOpen = false;
@@ -112,11 +113,11 @@ export class ManageStaffComponent implements OnInit {
 
 
   Search() {
-    if (this.firstName == '') {
+    if (this.search == '') {
       this.ngOnInit();
     } else {
-      this.users = this.users.filter((res: { mobile: string; }) => {
-        return RegExp(this.firstName.toLocaleLowerCase()).exec(res.mobile.toLocaleLowerCase())
+      this.users = this.users.filter((res: { Mobile: string; }) => {
+        return RegExp(this.search.toLocaleLowerCase()).exec(res.Mobile.toLocaleLowerCase())
       })
     }
   }
