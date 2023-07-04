@@ -93,7 +93,7 @@
           <ion-header>
             <ion-toolbar>
               <ion-buttons slot="start">
-                <ion-button (click)="close()">Cancel</ion-button>
+                <ion-button (click)="close('isModalOpen1')">Cancel</ion-button>
               </ion-buttons>
               <ion-title class="text-center">Apply</ion-title>
               <ion-buttons slot="end">
@@ -133,6 +133,54 @@
           </ion-content>
         </ng-template>
       </ion-modal>
+
+       <!-- scheme applied details -->
+       <ion-modal trigger="open-modal" [isOpen]="isModalOpen2" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="close('isModalOpen2')">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="text-center">Apply</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="apply(applySchemeForm.value)" [strong]="true">Confirm</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <form #applySchemeForm="ngForm" class="w-100 px-3">
+              <ion-item>
+                <ion-label position="floating">Qualification<span class="required-note">*</span></ion-label>
+                <ion-input type="text" [(ngModel)]="qualification1" name="qualification" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Name</ion-label>
+                <ion-input type="text" [(ngModel)]="name" name="name" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Age</ion-label>
+                <ion-input type="number" [(ngModel)]="age" name="age" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Education</ion-label>
+                <ion-input type="text" [(ngModel)]="education" name="education" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Document</ion-label>
+              </ion-item>
+              <ion-item>
+                <input id="fileUpload" type="file" #upload>
+              </ion-item>
+              <ion-item>
+                <ion-note class="note">Note: Please provide all documents in one pdf.</ion-note>
+              </ion-item>
+            </form>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
     </div>
   </div>
 </ion-content>

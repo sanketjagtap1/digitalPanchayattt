@@ -23,6 +23,7 @@ export class ManageSchemesComponent implements OnInit {
   documentsNeeded!: string;
   isModalOpen = false;
   isModalOpen1 = false;
+  isModalOpen2 = false;
   users: any
   id: any = '';
   p: number = 1;
@@ -56,8 +57,13 @@ export class ManageSchemesComponent implements OnInit {
     })
   }
 
-  close(){
-    this.isModalOpen1 = false;
+  close(no:any){
+    if(no=='isModalOpen1'){
+      this.isModalOpen1 = false;
+    }else if(no=='isModalOpen2'){
+      this.isModalOpen2 = false;
+      
+    }
   }
   cancel() {
     this.modal.dismiss(null, 'cancel').then(res => {
