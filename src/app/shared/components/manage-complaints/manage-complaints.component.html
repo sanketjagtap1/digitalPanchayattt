@@ -16,10 +16,11 @@
           <th>Action</th>
         </tr>
         <tr *ngFor="let user of users | paginate: {itemsPerPage:5, currentPage:p};">
-          <td data-th="Complaint ID">{{user.sr}}</td>
-          <td data-th="Description">Road Pot Holes</td>
-          <td data-th="Created Date">18-06-2023</td>
-          <td data-th="Created BY">Sanket</td>
+          <td data-th="Complaint ID">{{user.id}}</td>
+          <td data-th="Title">{{user.title}}</td>
+          <td data-th="Description">{{user.description}}</td>
+          <td data-th="Address">{{user.address}}</td>
+          <td data-th="Status">{{user.status}}</td>
           <td data-th="Action">
             <button class="btn btn-success mx-1"><ion-icon name="eye" ></ion-icon></button>
             <button class="btn btn-danger mx-1"><ion-icon name="checkmark-circle"></ion-icon></button>

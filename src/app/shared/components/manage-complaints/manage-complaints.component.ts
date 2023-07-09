@@ -30,64 +30,11 @@ export class ManageComplaintsComponent  implements OnInit {
   }
 
   ngOnInit() {
-    this.users = [
-      {
-        sr: 1,
-        fname: "Sanket",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "8806328987",
-      },
-      {
-        sr: 2,
-        fname: "rahul",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "9022898699",
-      },
-      {
-        sr: 3,
-        fname: "akash",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "774383",
-      },
-      {
-        sr: 4,
-        fname: "mohit",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "915628",
-      },
-      {
-        sr: 5,
-        fname: "rahul",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "7272",
-      },
-      {
-        sr: 5,
-        fname: "rahul",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "7373",
-      },
-      {
-        sr: 6,
-        fname: "rahul",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "7474",
-      },
-      {
-        sr: 7,
-        fname: "rahul",
-        lname: "Sanket",
-        email: "Sanket",
-        mobile: "7575",
-      },
-    ]
+    this.databaseService.getData('complaints').subscribe(res=>{
+      console.log(res)
+      this.users=res;
+    })
+
   }
 
   cancel() {
