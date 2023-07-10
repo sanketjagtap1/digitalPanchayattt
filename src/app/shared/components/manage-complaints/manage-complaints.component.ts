@@ -34,7 +34,6 @@ export class ManageComplaintsComponent  implements OnInit {
       console.log(res)
       this.users=res;
     })
-
   }
 
   cancel() {
