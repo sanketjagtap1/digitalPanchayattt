@@ -40,9 +40,9 @@ const routes: Routes = [
   },
   {
     path: 'users', component: AdminComponent, children: [
-      { path: 'dashboard', component: DashboardComponent },
       { path: 'manage-complaints', component: ManageComplaintsComponent },
       { path: 'manage-profile', component: ManageProfileComponent },
+      { path: 'manage-schemes', component: ManageSchemesComponent },
     ]
   },
 ];

@@ -21,8 +21,8 @@
           <td data-th="Mobile">{{user.Mobile}}</td>
           <td data-th="Email">{{user.Email}}</td>
           <td data-th="Action">
-            <button class="btn btn-success" (click)="editUser(user.id)">E</button>
-            <button class="btn btn-danger" (click)="deletUser(user.id)">D</button>
+            <button class="btn btn-success" (click)="editUser(user.id)"><ion-icon name="create"></ion-icon></button>
+            <button class="btn btn-danger" (click)="deletUser(user.id)"><ion-icon name="trash"></ion-icon></button>
           </td>
         </tr>
         <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
