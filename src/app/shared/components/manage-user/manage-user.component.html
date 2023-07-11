@@ -22,6 +22,8 @@
           <td data-th="Mobile">{{user.Mobile}}</td>
           <td data-th="Email">{{user.Email}}</td>
           <td data-th="Action">
+            <button class="btn btn-success" *ngIf="user.Approval=='Pending'" (click)="approve(user)"><ion-icon name="checkmark-done-circle-outline"></ion-icon></button>
+            <button class="btn btn-success" *ngIf="user.Approval=='Pending'" (click)="reject(user)"><ion-icon name="checkmark-done-circle-outline"></ion-icon></button>
             <button class="btn btn-danger" (click)="deleteUser(user.id)"><ion-icon name="trash"></ion-icon></button>
           </td>
         </tr>

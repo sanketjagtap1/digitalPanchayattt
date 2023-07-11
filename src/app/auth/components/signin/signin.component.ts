@@ -48,7 +48,7 @@ export class SigninComponent implements OnInit {
             });
             break;
           default:
-            this.router.navigate(['/User']).then(() => {
+            this.router.navigate(['/users/manage-schemes']).then(() => {
               console.log('Redirected to user dashboard');
             }).catch((err) => {
               console.log(err);
@@ -92,11 +92,15 @@ export class SigninComponent implements OnInit {
               console.log(err);
             });
           } else {
-            this.router.navigate(['/User']).then(() => {
-              console.log(res);
-            }).catch((err) => {
-              console.log(err);
-            });
+            if(user['Approval']=='Accept'){
+              this.router.navigate(['/users/manage-schemes']).then(() => {
+                console.log(res);
+              }).catch((err) => {
+                console.log(err);
+              });
+            }else{
+              this.sharedService.presentToast('Request Not Yet Approved', 'danger')
+            }
           }
 
           this.sharedService.presentToast('Login Success', 'success').then(() => { }).catch((err) => { });

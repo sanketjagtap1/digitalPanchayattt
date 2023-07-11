@@ -24,12 +24,14 @@ export class ManageComplaintsComponent  implements OnInit {
   users: any;
   firstName:any;
   isModalOpen=false;
+  decryptedUser:any;
   p:number=1;
   constructor(private sharedService: SharedService, private databaseService: DatabaseService) {
 
   }
 
   ngOnInit() {
+    this.decryptedUser = this.sharedService.getUserData();
     this.databaseService.getData('complaints').subscribe(res=>{
       console.log(res)
       this.users=res;

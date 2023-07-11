@@ -52,6 +52,24 @@ export class ManageUserComponent  implements OnInit {
     }
   }
 
+  approve(data:any){
+    console.log(data)
+    data.Approval='Accept'
+    this.databaseService.updateData(data, 'Users').then(res=>{
+      console.log(res);
+
+      this.sharedService.presentToast('User Request Rejected', 'success')
+    })
+  }
+  reject(data:any){
+    console.log(data)
+    data.Approval='Reject'
+    this.databaseService.updateData(data, 'Users').then(res=>{
+      console.log(res);
+
+      this.sharedService.presentToast('User Request Approved', 'success')
+    })
+  }
 
   Search() {
     if (this.firstName == '') {

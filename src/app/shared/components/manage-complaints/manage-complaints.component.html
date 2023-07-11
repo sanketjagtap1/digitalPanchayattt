@@ -3,9 +3,7 @@
     <h4 class="mt-2">Complaints</h4>
     <div class="wrapper">
       <div class="row">
-        <div class="col-12 ">
-          <input class="form-control" type="text" placeholder="Search By Mobile" [(ngModel)]="firstName" (ngModelChange)="Search()">
-        </div>
+        
       </div>
       <table class="rwd-table">
         <tr>
@@ -24,14 +22,14 @@
           <td data-th="Image"><a [href]="user.image">View</a></td>
           <td data-th="Action">
             <button class="btn btn-success mx-1"><ion-icon name="eye" ></ion-icon></button>
-            <button class="btn btn-danger mx-1"><ion-icon name="checkmark-circle"></ion-icon></button>
+            <button *ngIf="decryptedUser.UserRole!=='User'" class="btn btn-danger mx-1"><ion-icon name="checkmark-circle" ></ion-icon></button>
           </td>
         </tr>
         <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
       </table>
 
 
-      <ion-fab style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab *ngIf="decryptedUser.UserRole=='User'" style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
         <ion-fab-button size="small"  (click)="setOpen(true)"> 
           <ion-icon id="open-modal" expand="block" name="add"></ion-icon>
         </ion-fab-button>
