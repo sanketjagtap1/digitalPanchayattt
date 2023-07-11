@@ -7,6 +7,8 @@ import * as CryptoJS from 'crypto-js';
 import { CommonServiceService } from '../services/commonSrvice/common-service.service';
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,12 @@ import { Observable } from 'rxjs';
 export class SharedService {
 
   private readonly storage: Storage = inject(Storage);
-  constructor(private toastController: ToastController, private databaseService: DatabaseService, private router: Router, private commonServices: CommonServiceService) { }
+  constructor(private http: HttpClient,private toastController: ToastController, private databaseService: DatabaseService, private router: Router, private commonServices: CommonServiceService) { }
 
+  // Digitalpanchayat@0101  
+  sendEmail(data:any){
+    this.http.post('https://api.emailjs.com/api/v1.0/email/send', data).subscribe(res=>{console.log(res)})
+  }
   
   async presentToast(message: any, Color: any) {
     const toast = await this.toastController.create({

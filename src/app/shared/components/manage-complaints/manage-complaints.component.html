@@ -21,16 +21,16 @@
           <td data-th="Status">{{user.status}}</td>
           <td data-th="Image"><a [href]="user.image">View</a></td>
           <td data-th="Action">
-            <button class="btn btn-success mx-1"><ion-icon name="eye" ></ion-icon></button>
-            <button *ngIf="decryptedUser.UserRole!=='User'" class="btn btn-danger mx-1"><ion-icon name="checkmark-circle" ></ion-icon></button>
+            <button class="btn btn-success mx-1" (click)="setOpen(true, 'isModalOpen1', user)"><ion-icon name="eye" ></ion-icon></button>
+            <button class="btn btn-primary mx-1"><ion-icon name="checkmark-circle"></ion-icon></button>
           </td>
         </tr>
         <pagination-controls style="margin-top: 40px !important;" (pageChange)="p = $event"></pagination-controls>
       </table>
 
 
-      <ion-fab *ngIf="decryptedUser.UserRole=='User'" style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button size="small"  (click)="setOpen(true)"> 
+      <ion-fab style="position: fixed; bottom: 30px; right: 20px;" slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button size="small"  (click)="setOpen(true, 'isModalOpen')"> 
           <ion-icon id="open-modal" expand="block" name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -70,6 +70,55 @@
               </ion-item>
             </form>
             
+            
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <!-- View complaint modal  -->
+      <ion-modal trigger="open-modal" [isOpen]="isModalOpen1" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="close()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title class="text-center">Complaint</ion-title>
+            
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            
+            <ion-card>
+              <!-- Complaint image -->
+              <ion-img [src]="element.image"></ion-img>
+          
+              <ion-card-header>
+                <!-- Complaint title -->
+                <ion-card-title>{{ element.title }}</ion-card-title>
+              </ion-card-header>
+          
+              <ion-card-content>
+                <!-- Complaint description -->
+                <p>{{ element.description }}</p>
+          
+                <!-- Display comments -->
+                <ion-list>
+                  <ion-item *ngFor="let comment of comments ">
+                   > {{ comment.comment }}
+                  </ion-item>
+                </ion-list>
+          
+                <!-- Comment input field -->
+                <ion-item>
+                  <ion-label position="floating">Add Comment</ion-label>
+                  <ion-textarea [(ngModel)]="comment"></ion-textarea>
+                </ion-item>
+          
+                <!-- Post comment button -->
+                <ion-button expand="full" color="primary" (click)="postComment()">Post Comment</ion-button>
+              </ion-card-content>
+            </ion-card>
             
           </ion-content>
         </ng-template>

@@ -58,7 +58,7 @@ export class ManageUserComponent  implements OnInit {
     this.databaseService.updateData(data, 'Users').then(res=>{
       console.log(res);
 
-      this.sharedService.presentToast('User Request Rejected', 'success')
+      this.sharedService.presentToast('User Request Approved', 'success')
     })
   }
   reject(data:any){
@@ -66,8 +66,8 @@ export class ManageUserComponent  implements OnInit {
     data.Approval='Reject'
     this.databaseService.updateData(data, 'Users').then(res=>{
       console.log(res);
+      this.sharedService.presentToast('User Request Rejected', 'success')
 
-      this.sharedService.presentToast('User Request Approved', 'success')
     })
   }
 

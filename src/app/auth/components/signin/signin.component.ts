@@ -82,12 +82,14 @@ export class SigninComponent implements OnInit {
           if (user['UserRole'] === 'Admin') {
             this.router.navigate(['/admin/dashboard']).then(() => {
               console.log(res);
+              this.sharedService.presentToast('Login Success', 'success').then(() => { }).catch((err) => { });
             }).catch((err) => {
               console.log(err);
             });
           } else if (user['UserRole'] === 'Staff') {
             this.router.navigate(['/staff/dashboard']).then(() => {
               console.log(res);
+              this.sharedService.presentToast('Login Success', 'success').then(() => { }).catch((err) => { });
             }).catch((err) => {
               console.log(err);
             });
@@ -98,12 +100,11 @@ export class SigninComponent implements OnInit {
               }).catch((err) => {
                 console.log(err);
               });
+              this.sharedService.presentToast('Login Success', 'success').then(() => { }).catch((err) => { });
             }else{
               this.sharedService.presentToast('Request Not Yet Approved', 'danger')
             }
           }
-
-          this.sharedService.presentToast('Login Success', 'success').then(() => { }).catch((err) => { });
         } else {
           console.log('Login Failed');
           this.sharedService.presentToast('Invalid Email Or Password', 'danger').then(() => { }).catch((err) => { });

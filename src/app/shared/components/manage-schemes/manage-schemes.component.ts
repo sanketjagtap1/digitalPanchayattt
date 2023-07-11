@@ -18,7 +18,7 @@ export class ManageSchemesComponent implements OnInit {
 
   schemeForm: FormGroup;
   schemeName!: string;
-  schemeDetails:any;
+  schemeDetails: any;
   qualification!: string;
   description!: string;
   documentsNeeded!: string;
@@ -26,15 +26,15 @@ export class ManageSchemesComponent implements OnInit {
   isModalOpen1 = false;
   isModalOpen2 = false;
   showSchemeDetails = false;
-  decryptedUser:any;
+  decryptedUser: any;
   users: any;
-  msg:any;
+  msg: any;
   id: any = '';
   p: number = 1;
-  schemeId:any;
+  schemeId: any;
 
 
-  
+
   // apply for scheme form
   qualification1!: string;
   name!: string;
@@ -60,12 +60,12 @@ export class ManageSchemesComponent implements OnInit {
     })
   }
 
-  close(no:any){
-    if(no=='isModalOpen1'){
+  close(no: any) {
+    if (no == 'isModalOpen1') {
       this.isModalOpen1 = false;
-    }else if(no=='isModalOpen2'){
+    } else if (no == 'isModalOpen2') {
       this.isModalOpen2 = false;
-      
+
     }
   }
   cancel() {
@@ -134,14 +134,14 @@ export class ManageSchemesComponent implements OnInit {
   }
 
 
-  setOpen(isOpen: boolean, id:any) {
+  setOpen(isOpen: boolean, id: any) {
     console.log(id)
-    if(id==''){
+    if (id == '') {
       this.isModalOpen = isOpen;
-      
-    }else{
+
+    } else {
       this.isModalOpen1 = isOpen;
-      this.schemeId= id
+      this.schemeId = id
     }
   }
 
@@ -154,28 +154,28 @@ export class ManageSchemesComponent implements OnInit {
       this.sharedService.presentToast(err, 'danger')
     })
   }
-  apply(data:any) {
+  apply(data: any) {
     console.log(data)
-    
+
     console.log(this.decryptedUser.id)
     console.log(this.schemeId)
-    this.sharedService.uploadAndDownloadImage(this.uploadInputRef.nativeElement).subscribe(res=>{
-      
-      data.schemeId=this.schemeId;
-      data.userId=this.decryptedUser.id;
-      data.doc=res;
+    this.sharedService.uploadAndDownloadImage(this.uploadInputRef.nativeElement).subscribe(res => {
+
+      data.schemeId = this.schemeId;
+      data.userId = this.decryptedUser.id;
+      data.doc = res;
 
       console.log(data)
-      this.databaseService.addData(data, 'schemeRegistration').then(res=>{
+      this.databaseService.addData(data, 'schemeRegistration').then(res => {
         console.log(res)
         this.sharedService.presentToast("Successfully Applied", "success")
-      }).catch(err =>{
+      }).catch(err => {
         console.log(err)
         this.sharedService.presentToast("Failed To Apply", "danger")
-        
+
       })
     })
-    
+
   }
 
   editUser(id: any) {
@@ -194,43 +194,71 @@ export class ManageSchemesComponent implements OnInit {
     return this.schemeForm.valid;
   }
 
-  openModal(name:any, id:any){
-    if(name == 'isModalOpen'){
-      this.isModalOpen=true;
-    }else if(name == 'showSchemeDetails'){
-      this.showSchemeDetails=true;
+  openModal(name: any, id: any) {
+    if (name == 'isModalOpen') {
+      this.isModalOpen = true;
+    } else if (name == 'showSchemeDetails') {
+      this.showSchemeDetails = true;
       this.getSchemeMembers(id)
     }
   }
-  closeModal(name:any){
-    if(name == 'isModalOpen'){
-      this.isModalOpen=false;
-    }else if(name == 'showSchemeDetails'){
-      this.showSchemeDetails=false;
+  closeModal(name: any) {
+    if (name == 'isModalOpen') {
+      this.isModalOpen = false;
+    } else if (name == 'showSchemeDetails') {
+      this.showSchemeDetails = false;
     }
   }
 
-  getSchemeMembers(schemeId:any){
-    this.databaseService.getDataByKey(schemeId, 'schemeId', 'schemeRegistration').subscribe(res=>{
+  getSchemeMembers(schemeId: any) {
+    this.databaseService.getDataByKey(schemeId, 'schemeId', 'schemeRegistration').subscribe(res => {
       console.log(res);
-      this.schemeDetails=res;
+      this.schemeDetails = res;
     })
   }
 
-  updateStatus(data:any, status:any){
-    data['status']=status;
+  updateStatus(data: any, status: any) {
+    data['status'] = status;
     console.log(data)
-    
-    if(status=='accept'){
+
+    if (status == 'accept') {
       this.msg = 'Case Approved Succesfully'
-    }else{
-      this.msg = 'Case Reject Succesfully'
+      // Implimenting the email service
+      let body = {
+        "service_id": "service_n9wonyp",
+        "template_id": "template_2ee8kio",
+        "user_id": "OIkuQG1H0Fprh3tCp",
+        "accessToken": "hE6El5yGDArfEl0Zwc5zl",
+        "template_params": {
+    "to_name": "Sanket",
+    "Scheme_Name": "Di",
+    "Status": "Approved",
+    "send_to": "sanketjagta479@gmail.com"
     }
-    this.databaseService.updateData(data, 'schemeRegistration').then(res=>{
+    }
+      // this.sharedService.sendEmail(body)
+    } else {
+      this.msg = 'Case Reject Succesfully'
+      let body = {
+        "service_id": "service_n9wonyp",
+        "template_id": "template_2ee8kio",
+        "user_id": "OIkuQG1H0Fprh3tCp",
+        "accessToken": "hE6El5yGDArfEl0Zwc5zl", 
+        "template_params": {
+    "to_name": "Sanket",
+    "Scheme_Name": "Di",
+    "Status": "Rejected",
+    "send_to": "sanketjagta479@gmail.com"
+    }
+    }
+      // this.sharedService.sendEmail(body)
+    }
+    this.databaseService.updateData(data, 'schemeRegistration').then(res => {
       this.sharedService.presentToast(this.msg, 'success')
-    }).catch(err=>{
+    }).catch(err => {
       this.sharedService.presentToast('Unable  to proccess request', 'danger')
     })
   }
+
 
 }
