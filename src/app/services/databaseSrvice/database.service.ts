@@ -85,4 +85,11 @@ export class DatabaseService {
     return collectionData(q, { idField: 'id' });
   }
 
+  getFeedback(compaintid:any){
+    console.log("Inside Search Method======>", compaintid)
+    const usersCollection = collection(this.firestore, 'feedback');
+    const q = query(usersCollection, where('complaintId', '==', compaintid));
+    return collectionData(q, { idField: 'id' });
+  }
+
 }

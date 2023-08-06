@@ -30,6 +30,8 @@ export class ManageComplaintsComponent  implements OnInit {
   element:any;
   p:number=1;
   comments!:any;
+  feedbacks!:any;
+  feedback:any;
 
   @Input() complaint: any;
   comment!: string;
@@ -50,6 +52,14 @@ export class ManageComplaintsComponent  implements OnInit {
     this.databaseService.getComments(id).subscribe(res=>{
       console.log(res)
       this.comments=res;
+    })
+  }
+
+  fetchFeedback(id:any) {
+    console.log(id)
+    this.databaseService.getFeedback(id).subscribe(res=>{
+      console.log(res)
+      this.feedbacks=res;
     })
   }
 
@@ -83,6 +93,9 @@ export class ManageComplaintsComponent  implements OnInit {
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
+  }
+  cancel1() {
+    this.isModalOpen=false;
   }
   close() {
     this.isModalOpen1=false;
@@ -127,11 +140,37 @@ export class ManageComplaintsComponent  implements OnInit {
       this.isModalOpen1 = isOpen;
       this.element=data;
       this.fetchComments(this.element.id)
+      this.fetchFeedback(this.element.id)
     }
   }
 
+  complete(data:any){
+    console.log(data);
+    data.status='Complete';
+    this.databaseService.updateData(data, 'complaints')
+  }
 
+  postFeedback(){
+    // Handle posting comment logic here
+    console.log('Posting Feedback:', this.feedback);
+   let feedbackData={
+    complaintId: this.element.id,
+    feedback: this.feedback
+    }
 
+    this.databaseService.addData(feedbackData, 'feedback').then(res=>{
+      console.log(res)
+      this.sharedService.presentToast('Feedback Posted', 'success')
+    }).catch(err=>{
+      console.log(err);
+      this.sharedService.presentToast('Feedback failed', 'danger')
+    })
+    // Show a toast message to indicate the comment was posted
+    this.presentToast('Feedback posted successfully');
+    
+    // Clear the comment input field
+    this.feedback = '';
+  }
 
   Search() {
     // if (this.firstName == '') {

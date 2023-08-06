@@ -221,39 +221,45 @@ export class ManageSchemesComponent implements OnInit {
     data['status'] = status;
     console.log(data)
 
-    if (status == 'accept') {
-      this.msg = 'Case Approved Succesfully'
-      // Implimenting the email service
-      let body = {
-        "service_id": "service_n9wonyp",
-        "template_id": "template_2ee8kio",
-        "user_id": "OIkuQG1H0Fprh3tCp",
-        "accessToken": "hE6El5yGDArfEl0Zwc5zl",
-        "template_params": {
-    "to_name": "Sanket",
-    "Scheme_Name": "Di",
-    "Status": "Approved",
-    "send_to": "sanketjagta479@gmail.com"
-    }
-    }
-      // this.sharedService.sendEmail(body)
-    } else {
-      this.msg = 'Case Reject Succesfully'
-      let body = {
-        "service_id": "service_n9wonyp",
-        "template_id": "template_2ee8kio",
-        "user_id": "OIkuQG1H0Fprh3tCp",
-        "accessToken": "hE6El5yGDArfEl0Zwc5zl", 
-        "template_params": {
-    "to_name": "Sanket",
-    "Scheme_Name": "Di",
-    "Status": "Rejected",
-    "send_to": "sanketjagta479@gmail.com"
-    }
-    }
-      // this.sharedService.sendEmail(body)
-    }
+    
     this.databaseService.updateData(data, 'schemeRegistration').then(res => {
+      let userData = this.databaseService.getDataById(data.userId, 'Users').subscribe(res=>{
+       
+   console.log("userData===========>" , res)
+
+   if (status == 'accept') {
+     this.msg = 'Case Approved Succesfully'
+     // Implimenting the email service
+     let body = {
+       "service_id": "service_n9wonyp",
+       "template_id": "template_2ee8kio",
+       "user_id": "OIkuQG1H0Fprh3tCp",
+       "accessToken": "hE6El5yGDArfEl0Zwc5zl",
+       "template_params": {
+         "to_name": res['FirstName'],
+         "Scheme_Name": data.schemeName,
+         "Status": "Approved",
+         "send_to": res['Email']
+       }
+     }
+     this.sharedService.sendEmail(body)
+   } else {
+     this.msg = 'Case Reject Succesfully'
+     let body = {
+       "service_id": "service_n9wonyp",
+       "template_id": "template_2ee8kio",
+       "user_id": "OIkuQG1H0Fprh3tCp",
+       "accessToken": "hE6El5yGDArfEl0Zwc5zl",
+       "template_params": {
+         "to_name": res['FirstName'],
+         "Scheme_Name": data.schemeName,
+         "Status": "Rejected",
+         "send_to": res['Email']
+       }
+     }
+     this.sharedService.sendEmail(body)
+   }
+      })
       this.sharedService.presentToast(this.msg, 'success')
     }).catch(err => {
       this.sharedService.presentToast('Unable  to proccess request', 'danger')

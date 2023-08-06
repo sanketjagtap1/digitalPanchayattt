@@ -24,18 +24,18 @@ export class SignupComponent implements OnInit {
   @ViewChild('upload') uploadInputRef!: ElementRef<HTMLInputElement>;
   ngOnInit() { /* TODO document why this method 'ngOnInit' is empty */ }
   signUp(user: any) {
-    this.file = this.uploadInputRef.nativeElement;
+    let file = this.uploadInputRef.nativeElement;
     // check if user is already present
 
-  this.sharedService.uploadAndDownloadImage(this.file).subscribe(res=>{
-    console.log("res", res)
+  // this.sharedService.uploadAndDownloadImage(file).subscribe(res=>{
+    // console.log("res", res)
     user.UserRole = "User";
     user.Approval = "Pending";
-    user.profileImage = res;
+    // user.profileImage = res;
     this.sharedService.signUp(user).then(res=>{
       this.signupForm.resetForm();
     });
-  })
+  // })
   
     
     

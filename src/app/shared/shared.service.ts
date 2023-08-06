@@ -116,7 +116,7 @@ uploadAndDownloadImage(input: HTMLInputElement): Observable<string | null> {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.log("err", err);
             return null;
           });
 

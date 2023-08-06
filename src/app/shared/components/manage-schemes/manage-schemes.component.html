@@ -191,7 +191,7 @@
               <ion-buttons slot="start">
                 <ion-button (click)="closeModal('showSchemeDetails')">Cancel</ion-button>
               </ion-buttons>
-              <ion-title class="text-center">Deails</ion-title>
+              <ion-title class="text-center">Details</ion-title>
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
@@ -219,12 +219,12 @@
                 </ion-item>
 
 
-                <ion-item>ssd
+                <ion-item>
                   <a href="{{ user.doc }}" target="_blank">View Document</a>
                 </ion-item>
 
-                <ion-button *ngIf="user.status=='pending' &&  decryptedUser.UserRole!=='User'" color="success" (click)="updateStatus(user, 'accepted')">Accept</ion-button>
-                <ion-button color="danger" *ngIf="user.status=='pending' &&  decryptedUser.UserRole!=='User'" (click)="updateStatus(user, 'rejected')">Reject</ion-button>
+                <ion-button *ngIf="  decryptedUser.UserRole!=='User'" color="success" (click)="updateStatus(user, 'accepted')">Accept</ion-button>
+                <ion-button color="danger" *ngIf=" decryptedUser.UserRole!=='User'" (click)="updateStatus(user, 'rejected')">Reject</ion-button>
               </ion-card-content>
             </ion-card>
           </ion-content>
